@@ -1,0 +1,16 @@
+.gridItem{
+  background-size: 100%;
+  box-shadow: 0 0 1.25em 0 rgba(0,0,0,.2);
+  background-color:#fff;
+  cursor: move;
+}
+
+.gridItem .name{
+  display:block;
+  bottom:-22px;
+  width:100%;
+  font-size:12px;
+  position:absolute;
+  color:#555;
+  text-transform: capitalize;
+}

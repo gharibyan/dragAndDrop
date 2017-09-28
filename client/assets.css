@@ -1,0 +1,34 @@
+/*
+ * note that styling gu-mirror directly is a bad practice because it's too generic.
+ * you're better off giving the draggable elements a unique class and styling that directly!
+ */
+.gu-mirror {
+    position: fixed !important;
+    margin: 0 !important;
+    z-index: 9999 !important;
+    transform: scale(1.05) !important;
+    transition: .8s all;
+}
+.gu-hide {
+    display: none !important;
+}
+.gu-unselectable {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+}
+.gu-transit {
+    opacity: 1 !important;
+    /*visibility: hidden !important;
+    transition: 0.5s all;
+
+    position: absolute;
+    */
+}
+.handle {
+    padding: 0 5px;
+    margin-right: 5px;
+    background-color: rgba(0, 0, 0, 0.4);
+    cursor: move;
+}
