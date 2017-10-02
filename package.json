@@ -1,6 +1,6 @@
 {
   "name": "drag.drop",
-  "Description":"Simple drag and drop",
+  "Description": "Simple drag and drop",
   "version": "0.0.0",
   "private": true,
   "author": "Khachatur Gharibyan",
@@ -19,6 +19,7 @@
     "express": "~4.14.1",
     "extract-text-webpack-plugin": "^2.1.2",
     "file-list-plugin": "^0.1.0",
+    "immutability-helper": "^2.4.0",
     "install": "^0.10.1",
     "knex": "^0.12.9",
     "lodash": "^4.17.4",

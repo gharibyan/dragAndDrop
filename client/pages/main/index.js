@@ -10,6 +10,8 @@ import _find from 'lodash/find';
 import _uniqBy from 'lodash/uniqBy';
 import _remove from 'lodash/remove';
 import _findIndex from 'lodash/findIndex';
+import _groubBy from 'lodash/groupBy';
+import _each from 'lodash/each';
 import styles from './index.scss';
 
 const imgId = [1011, 883, 1074, 823, 64, 65, 839, 314, 256, 316, 92, 643, 1, 2, 3, 4, 5, 20];
@@ -20,7 +22,8 @@ const AbsoluteGrid2 = new createAbosluteGrid(Items, {});
 let items = imgId.reduce((acc, val, key) => {
     const ih = 200 + Math.floor(Math.random() * 10) * 15;
     acc.push({
-        url:`https://unsplash.it/250/${ih}?image=${val}`,
+        url: `https://unsplash.it/250/${ih}?image=${val}`,
+        height:ih,
         sort: key,
         key: key
     });
@@ -46,6 +49,7 @@ class Main extends React.Component {
         const vaseVersa = items === 'items2' ? 'items' : 'items2';
         const indexOfRemovingElement = _findIndex(this.state[vaseVersa], (item) => item.url === this.source.url);
 
+
         this.state[items].push(this.source);
         this.state[items] = _remove(_uniqBy(this.state[items], 'url'), undefined);
         if (indexOfRemovingElement > -1) {
@@ -63,7 +67,9 @@ class Main extends React.Component {
         })
     }
 
-    onMove(origin, destination, items) {
+    componentDidMount(){}
+
+    onMove = (origin, destination, items) => {
         const vaseVersa = items === 'items2' ? 'items' : 'items2';
         this.destinationChanged = false;
 
@@ -84,7 +90,7 @@ class Main extends React.Component {
 
         this.sortItems(items, source, target);
         this.setState({[`${items}`]: this.state[items]});
-    }
+    };
 
     sortItems(items, source, target) {
         const targetSort = target.sort;
@@ -111,9 +117,26 @@ class Main extends React.Component {
         });
     }
 
+    debounce(func, wait, immediate) {
+        let timeout;
+        return function () {
+            let context = this, args = arguments;
+            let later = function () {
+                timeout = null;
+                if (!immediate) func.apply(context, args);
+            };
+            if (immediate && !timeout) func.apply(context, args);
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    onMoveDebounced = (source, target, items) => {
+        this.debounce(this.onMove(source, target, items), 10);
+    };
+
     onDragEnd(e) {
         if (!e) return;
-        console.log(e);
         const isTouch = e.changedTouches;
         const clientX = isTouch ? e.changedTouches[0].clientX : e.clientX;
         const clientY = isTouch ? e.changedTouches[0].clientY : e.clientY;
@@ -131,11 +154,11 @@ class Main extends React.Component {
                 <div id="left" className={[styles['grid-item']].join(' ')}>
                     <AbsoluteGrid items={this.state.items}
                                   id="left"
-                                  onMove={(source, target) => this.onMove(source, target, 'items')}
+                                  onMove={(source, target) => this.onMoveDebounced(source, target, 'items')}
                                   onDragEnd={this.onDragEnd}
                                   dragEnabled={true}
                                   responsive={true}
-                                  verticalMargin={42}
+                                  verticalMargin={5}
                                   itemWidth={200}
                                   itemHeight={180}
                     />
@@ -148,7 +171,7 @@ class Main extends React.Component {
                                    onDragEnd={this.onDragEnd}
                                    dragEnabled={true}
                                    responsive={true}
-                                   verticalMargin={42}
+                                   verticalMargin={5}
                                    itemWidth={200}
                                    itemHeight={180}
                     />

@@ -1,6 +1,7 @@
 'use strict';
 
-export default class LayoutManager {
+
+class LayoutManager {
 
     columns;
     horizontalMargin;
@@ -25,6 +26,7 @@ export default class LayoutManager {
         this.horizontalMargin = (this.columns === 1) ? 0 : Math.round(this.layoutWidth - (this.columns * this.itemWidth)) / (this.columns - 1);
         this.verticalMargin = (options.verticalMargin === -1) ? this.horizontalMargin : options.verticalMargin;
         this.rowHeight = this.itemHeight + this.verticalMargin;
+
     }
 
     getTotalHeight(filteredTotal) {
@@ -42,8 +44,9 @@ export default class LayoutManager {
     getPosition(index) {
         const col = this.getColumn(index);
         const row = this.getRow(index);
-        const margin = this.horizontalMargin/2;
+        const margin = this.horizontalMargin/6;
         const width = this.itemWidth;
+
         return {
             x: Math.round((col * width) + (col * margin)),
             y: Math.round((this.itemHeight + this.verticalMargin*2) * row)
@@ -55,16 +58,17 @@ export default class LayoutManager {
         return 'translate3d(' + position.x + 'px, ' + position.y + 'px, 0)';
     }
 
-    getStyle(index, animation, isFiltered) {
+    getStyle(index, animation, isFiltered, onHover) {
 
         const transform = this.getTransform(index);
         const style = {
             width: this.itemWidth + 'px',
-            //height: this.itemHeight + 'px',
-            WebkitTransform: transform,
-            MozTransform: transform,
-            msTransform: transform,
-            transform: transform,
+            height: this.itemHeight + 'px',
+            WebkitTransform: `${transform} ${onHover ? 'scale(1.1)' : ''}`,
+            MozTransform: `${transform} ${onHover ? 'scale(1.1)' : ''}`,
+            msTransform: `${transform} ${onHover ? 'scale(1.1)' : ''}`,
+            transform: `${transform} ${onHover ? 'scale(1.1)' : ''}`,
+            zIndex:`${onHover ? 100 : 0}`,
             position: 'absolute',
             boxSizing: 'border-box',
             display: isFiltered ? 'none' : 'block',
@@ -79,4 +83,9 @@ export default class LayoutManager {
 
         return style;
     }
+}
+
+
+export default {
+    LayoutManager,
 }

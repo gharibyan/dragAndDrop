@@ -39,7 +39,7 @@ export default class DragManager {
 
 
             if(typeof  this.update === 'function'){
-                this.update(this.dragX, this.dragY);
+                this.update(this.dragX, this.dragY, e);
             }
 
 
@@ -70,12 +70,21 @@ export default class DragManager {
     }
 
     endDrag(e) {
+        if(!e) return;
         document.removeEventListener('mousemove', this.dragMove);
         document.removeEventListener('mouseup', this.endDrag);
 
+        const isTouch = e.changedTouches;
+        const clientX = isTouch ? e.changedTouches[0].clientX : e.clientX;
+        const clientY = isTouch ? e.changedTouches[0].clientY : e.clientY;
+
+        const dragX = clientX - this.initialMouseX;
+        const dragY = clientY - this.initialMouseY;
+
+
         this.dragItem = null;
         if (this.update && typeof this.update === 'function') {
-            this.update(null, null);
+            this.update(null, null, e);
         }
         this.update = null;
 
@@ -89,6 +98,7 @@ export default class DragManager {
 
             this.update = fnUpdate;
             this.dragItem = item;
+            this.domNode = domNode;
             const pageX = isTouch ? e.targetTouches[0].pageX : e.pageX;
             const pageY = isTouch ? e.targetTouches[0].pageY : e.pageY;
 

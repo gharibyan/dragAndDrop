@@ -17,9 +17,10 @@ ul{
   padding: 10px;
   > div {
     width: 50%;
-    padding: 20px;
-    background: #131212;
+    //padding: 20px;
+    background: #E0E0E0;
     overflow: auto;
+    height: 100%;
     &:first-child {
       margin-right: 20px;
     }

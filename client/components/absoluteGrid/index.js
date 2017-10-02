@@ -5,6 +5,7 @@ import {debounce, sortBy} from 'lodash';
 import createDisplayObject from './BaseDisplayObject.jsx';
 import DragManager from './DragManager.js';
 import LayoutManager from './LayoutManager.js';
+import _each from 'lodash/each';
 
 export default function createAbsoluteGrid(DisplayObject, displayProps = {}, forceImpure = false) {
 
@@ -60,7 +61,33 @@ export default function createAbsoluteGrid(DisplayObject, displayProps = {}, for
                 this.props.onDragStart,
                 this.props.onDragEnd,
                 this.props.onDragMove,
-                this.props.keyProp);
+                this.props.keyProp
+            );
+
+
+
+           /* let filteredIndex = 0;
+            let sortedIndex = {};
+
+            sortBy(this.state.items, this.props.sortProp).forEach(item => {
+                if (!item[this.props.filterProp]) {
+                    const key = item[this.props.keyProp];
+                    sortedIndex[key] = filteredIndex;
+                    filteredIndex++;
+                }
+            });
+
+            _each(props.items, (item)=>{
+                const key = item[this.props.keyProp];
+                const index = sortedIndex[key];
+                LayoutManager.pushElems({
+                    itemWidth: this.props.itemWidth, //33.2%
+                    itemHeight: item.height,
+                    verticalMargin: this.props.verticalMargin,
+                    zoom: this.props.zoom,
+                    index:index,
+                }, this.state.layoutWidth);
+            });*/
 
             this.state = {
                 layoutWidth: 0,
@@ -85,6 +112,7 @@ export default function createAbsoluteGrid(DisplayObject, displayProps = {}, for
             const gridItems = this.state.items.map(item => {
                 const key = item[this.props.keyProp];
                 const index = sortedIndex[key];
+
                 return (
                     <WrappedDisplayObject
                         item={item}
@@ -112,12 +140,13 @@ export default function createAbsoluteGrid(DisplayObject, displayProps = {}, for
                 zoom: this.props.zoom
             };*/
             //const layout = new LayoutManager(options, this.state.layoutWidth);
+
             const gridStyle = {
                 position: 'relative',
                 display: 'block',
-                height:  `100%`
+                height:  `100%`,
+                padding:`20px`,
             };
-
 
             return (
                 <div
